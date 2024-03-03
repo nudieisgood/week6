@@ -34,15 +34,31 @@ const routes = [
   {
     path: '/admin',
     name: 'adminLayout',
-    component: () => import('@/views/AdminLayout'),
+    component: () => import('@/views/Admin/AdminLayout'),
     children: [
       {
         path: 'products',
-        component: () => import('@/views/AdminProducts')
+        component: () => import('@/views/Admin/AdminProducts')
+      },
+      {
+        path: 'add-product',
+        component: () => import('@/views/Admin/AddProduct')
+      },
+      {
+        path: 'edit-product/:id',
+        component: () => import('@/views/Admin/EditProduct')
       },
       {
         path: 'orders',
-        component: () => import('@/views/AdminOrders')
+        component: () => import('@/views/Admin/AdminOrders')
+      },
+      {
+        path: 'coupons',
+        component: () => import('@/views/Admin/AdminCoupons')
+      },
+      {
+        path: 'add-coupon',
+        component: () => import('@/views/Admin/AddCoupon')
       }
     ]
   }

@@ -1,5 +1,6 @@
 import './assets/main.css'
-
+import LoadingVue from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/css/index.css'
 // import axios from 'axios'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -8,6 +9,7 @@ import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
 import * as AllRules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
+import Vue3Toastify, { toast } from 'vue3-toastify'
 
 import App from './App.vue'
 import router from './router'
@@ -25,10 +27,14 @@ configure({
 setLocale('zh_TW')
 
 const app = createApp(App)
-
+app.use(Vue3Toastify, {
+  autoClose: 1000, // 自動關閉時間
+  position: toast.POSITION.TOP_CENTER // 提示窗位置
+})
 app.use(createPinia())
 app.use(router)
-app.component('VeeForm', Form)
-app.component('VeeField', Field)
+app.component('LoadingVue', LoadingVue)
+app.component('VForm', Form)
+app.component('VField', Field)
 app.component('ErrorMessage', ErrorMessage)
 app.mount('#app')

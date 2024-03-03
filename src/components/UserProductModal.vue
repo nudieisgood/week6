@@ -47,7 +47,6 @@ const props = defineProps({
     }
   }
 })
-console.log(props.product)
 const emits = defineEmits(['add-to-cart'])
 const modalRef = ref(null)
 const modal = ref(null)

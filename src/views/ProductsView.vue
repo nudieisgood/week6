@@ -1,4 +1,5 @@
 <template>
+      <loadingVue :active="isPageLoading" />
   <div class="container">
     <div class="mt-4">
       <!-- 產品Modal -->
@@ -54,14 +55,17 @@ const userProductModalRef = ref(null)
 const isLoading = ref({ loadingItem: '' })
 const products = ref([])
 const product = ref({})
+const isPageLoading = ref(false)
 
 const getProducts = async () => {
+  isPageLoading.value = true
   try {
     const res = await axios.get(`${import.meta.env.VITE_API}/api/${import.meta.env.VITE_PATH}/products/all`)
     products.value = res.data.products
   } catch (error) {
     alert(error.response.data.message)
   }
+  isPageLoading.value = false
 }
 const getProductById = async (id) => {
   try {
@@ -71,7 +75,6 @@ const getProductById = async (id) => {
     product.value = res.data.product
     userProductModalRef.value.openModal()
   } catch (error) {
-    console.log(error)
     alert(error.response.data.message)
   }
 }
@@ -95,8 +98,8 @@ const goToProduct = (id) => {
   router.push(`/product/${id}`)
 }
 
-onMounted(() => {
-  getProducts()
+onMounted(async () => {
+  await getProducts()
 })
 </script>
 

@@ -1,4 +1,5 @@
 <template>
+  <loadingVue :active="isPageLoading" />
   <div class="container">
     <div class="row justify-content-center">
       <h1 class="h3 mb-3 font-weight-normal">請先登入</h1>
@@ -31,8 +32,10 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const user = ref({ username: '', password: '' })
 const errorMsg = ref('')
+const isPageLoading = ref(false)
 
 const login = async () => {
+  isPageLoading.value = true
   axios
     .post(`${import.meta.env.VITE_API}/admin/signin`, user.value)
     .then((res) => {
@@ -44,7 +47,7 @@ const login = async () => {
     })
     .catch((error) => {
       errorMsg.value = error.data.message
-    })
+    }).finally(() => { isPageLoading.value = false })
 }
 
 </script>

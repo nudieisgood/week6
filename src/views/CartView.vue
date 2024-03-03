@@ -1,4 +1,5 @@
 <template>
+  <loadingVue :active="isPageLoading" />
   <div class="container">
     <div class="mt-4">
       <!-- 購物車列表 -->
@@ -56,28 +57,28 @@
       </table>
     </div>
     <div class="my-5 row justify-content-center">
-      <VeeForm ref="formRef" class="col-md-6" v-slot="{ errors }" @submit="createOrder">
+      <VForm ref="formRef" class="col-md-6" v-slot="{ errors }" @submit="createOrder">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <VeeField id="email" name="email" type="email" class="form-control" :class="{ 'is-invalid': errors['email'] }"
+          <VField id="email" name="email" type="email" class="form-control" :class="{ 'is-invalid': errors['email'] }"
             placeholder="請輸入 Email" rules="email|required" v-model="form.user.email" />
           <ErrorMessage name="email" class="invalid-feedback" />
         </div>
         <div class="mb-3">
           <label for="name" class="form-label">收件人姓名</label>
-          <VeeField id="name" name="姓名" type="text" class="form-control" :class="{ 'is-invalid': errors['姓名'] }"
+          <VField id="name" name="姓名" type="text" class="form-control" :class="{ 'is-invalid': errors['姓名'] }"
             placeholder="請輸入姓名" rules="required" v-model="form.user.name" />
           <ErrorMessage name="姓名" class="invalid-feedback" />
         </div>
         <div class="mb-3">
           <label for="tel" class="form-label">收件人電話</label>
-          <VeeField id="tel" name="電話" type="text" class="form-control" :class="{ 'is-invalid': errors['電話'] }"
+          <VField id="tel" name="電話" type="text" class="form-control" :class="{ 'is-invalid': errors['電話'] }"
             placeholder="請輸入電話" rules="required" v-model="form.user.tel" />
           <ErrorMessage name="電話" class="invalid-feedback" />
         </div>
         <div class="mb-3">
           <label for="address" class="form-label">收件人地址</label>
-          <VeeField id="address" name="地址" type="text" class="form-control" :class="{ 'is-invalid': errors['地址'] }"
+          <VField id="address" name="地址" type="text" class="form-control" :class="{ 'is-invalid': errors['地址'] }"
             placeholder="請輸入地址" rules="required" v-model="form.user.address" />
           <ErrorMessage name="地址" class="invalid-feedback" />
         </div>
@@ -88,7 +89,7 @@
         <div class="text-end">
           <button type="submit" class="btn btn-danger">送出訂單</button>
         </div>
-      </VeeForm>
+      </VForm>
     </div>
   </div>
 </template>
@@ -99,6 +100,7 @@ import { ref, onMounted } from 'vue'
 
 const isLoading = ref({ loadingItem: '' })
 const isDeleteCartsLoading = ref(false)
+const isPageLoading = ref(false)
 
 const cart = ref({})
 const formRef = ref(null)
@@ -152,6 +154,7 @@ const updateCart = async (item) => {
   }
 }
 const getCart = async () => {
+  isPageLoading.value = true
   try {
     const res = await axios.get(`${import.meta.env.VITE_API}/api/${import.meta.env.VITE_PATH}/cart`)
 
@@ -159,6 +162,7 @@ const getCart = async () => {
   } catch (error) {
     alert(error.response.data.message)
   }
+  isPageLoading.value = false
 }
 
 const createOrder = async () => {
